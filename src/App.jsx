@@ -15,6 +15,7 @@ import {
 import profileImage from "../assets/profile.png";
 import popnAnalysisImage from "../assets/projects/popn/analysis.png";
 import popnHomeImage from "../assets/projects/popn/home.png";
+import popnProblemImage from "../assets/projects/popn/popnproblem.png";
 import popnProfileImage from "../assets/projects/popn/profile.png";
 
 const contactLinks = [
@@ -123,98 +124,127 @@ const projects = [
     id: "popn",
     label: "Project 01",
     title: "popn.gg",
-    subtitle: "플레이데이터 조회와 이미지 리소스 제공 구조를 개선한 백엔드 프로젝트",
+    subtitle: "팝픈뮤직 플레이 기록 · 랭킹 · 성장 추적 서비스",
     period: "2025.03 - 2025.06",
     team: "Team Project",
-    role: "Backend Developer",
+    role: "Backend Developer · Data API",
     theme: "performance",
-    keywords: ["DTO Projection", "Query Optimization", "Statistics API", "Cloudflare CDN"],
+    meta: [
+      { label: "Period", value: "2023.12 - Present" },
+      { label: "Status", value: "Live Service" },
+      { label: "Users", value: "MAU 500+" },
+      { label: "Role", value: "Backend Developer" },
+    ],
+    keywords: ["Live Service", "MAU 500+", "2년 운영", "2023.12 Launch", "User Data Platform", "Ranking System", "Growth Tracking"],
     showcase: [
       { label: "홈 / 신규 악곡", src: popnHomeImage, variant: "home" },
       { label: "유저 프로필", src: popnProfileImage, variant: "profile" },
       { label: "곡 상세 분석", src: popnAnalysisImage, variant: "analysis" },
     ],
     overview:
-      "대량 플레이데이터 조회 성능과 곡 자켓 이미지 제공 구조를 개선해, 화면에 필요한 데이터를 빠르게 전달하도록 재설계한 프로젝트입니다.",
+      "2023년 12월 배포를 시작해 현재까지 운영 중인 pop'n music 플레이 기록 서비스입니다.",
     intro: [
-      "많은 플레이 기록을\n빠르게 조회하고\n분석할 수 있도록 만들었습니다.",
-      "곡, 채보, 유저 기록, 랭킹, 스코어 분포 데이터를 제공하는 서비스에서\n대량 데이터 조회 성능과 이미지 제공 구조를 개선했습니다.\n\nDTO Projection, DB 집계, 페이지네이션을 적용해 조회 비용을 줄이고,\nS3와 Cloudflare CDN을 활용해 반복 이미지 요청을 효율적으로 처리했습니다.",
+      "2년째 운영 중인\n팝픈뮤직 기록 서비스",
+      "2023년 12월 배포를 시작한 popn.gg는\n월간 활성 사용자 약 500명이 사용하는 pop'n music 플레이 기록 서비스입니다.\n\n유저는 자신의 플레이 기록을 갱신하고,\n곡별 성과, 랭킹, 팝클래스 변화를 통해\n플레이 성장을 한눈에 확인할 수 있습니다.",
     ],
     problem: {
       title: "대량 플레이데이터 조회와 이미지 리소스 제공 과정에서 응답 비용이 커지는 문제가 있었습니다.",
+      image: popnProblemImage,
+      imageCaption: "공식 사이트 데이터 예시",
+      imageDescription: "곡과 난이도 중심으로 제공되는 정적 정보",
+      officialData: ["곡명", "장르", "난이도", "레벨"],
+      userData: ["내 점수", "메달", "랭킹", "스코어 분포", "팝클래스 변화"],
       items: [
         {
           label: "Problem",
-          text: "Entity 전체 조회와 Lazy Loading 기반 접근으로 N+1 가능성과 불필요한 객체 생성 비용이 발생할 수 있었습니다.",
+          headline: "공식 곡 데이터만으로는 유저의 성장을 설명할 수 없었습니다",
+          text: "공식 데이터는 곡명, 장르, 난이도, 레벨처럼 정적인 정보에 가깝습니다. 하지만 유저가 실제로 알고 싶은 것은 특정 곡에서 내가 어떤 점수를 냈는지, 어떤 메달을 얻었는지, 다른 유저와 비교했을 때 어느 위치에 있는지였습니다.",
         },
         {
           label: "Solution",
-          text: "DTO Projection, DB 집계, 페이지네이션을 적용해 화면에 필요한 데이터만 조회하도록 개선했습니다.",
+          headline: "화면마다 필요한 기록을 따로 제공",
+          text: "유저 프로필, 곡 상세, 랭킹, 통계 화면이 각각 필요한 정보만 받을 수 있도록 API를 나누고, 반복 통계는 DB 집계와 전용 응답 모델로 정리했습니다.",
         },
         {
           label: "Goal",
-          text: "곡 목록, 유저 프로필, 곡 상세 분석 화면에서 대량 데이터를 빠르게 제공하고 이미지 로딩 체감을 개선합니다.",
+          headline: "성장 흐름을 한눈에 보는 경험",
+          text: "기록이 늘어나도 목록, 프로필, 분석 화면이 빠르게 열리고 플레이 성과를 한눈에 이해할 수 있는 서비스 경험을 목표로 했습니다.",
         },
       ],
     },
     myRole: [
-      "백엔드 API 설계 및 데이터 조회 최적화",
-      "통계 응답 구조와 DB 집계 기반 조회 흐름 설계",
-      "S3 원본 저장소와 Cloudflare CDN 기반 이미지 제공 흐름 구성",
-      "레거시 Entity 중심 조회를 화면 전용 Projection 구조로 재설계",
+      "화면별 데이터 요구사항을 정리하고 API 응답 구조를 설계했습니다.",
+      "반복 통계 조회를 DB 집계와 DTO Projection 기반으로 최적화했습니다.",
+      "S3와 Cloudflare CDN으로 이미지 제공 흐름을 분리했습니다.",
+      "백엔드 검색 API와 Redis Read Model로 목록 탐색 흐름을 개선했습니다.",
+      "Redis Lock과 Worker 기반 구조로 대량 갱신 처리 방향을 설계했습니다.",
     ],
+    roleSummary:
+      "저는 기록·랭킹·통계 데이터를 화면별로 빠르게 제공하기 위한 백엔드 API와 조회 구조를 담당했습니다.",
     techStack: [
-      { name: "Spring Boot", reason: "REST API와 도메인 중심 백엔드 구조를 안정적으로 구성하기 위해 사용" },
-      { name: "JPA / JPQL", reason: "DTO Projection으로 필요한 필드만 조회하고 Entity 로딩 비용을 줄이기 위해 사용" },
-      { name: "MySQL", reason: "랭크, 메달, 레벨별 통계를 DB 집계 중심으로 처리하기 위해 사용" },
-      { name: "Redis", reason: "검색용 Read Model과 대량 갱신 Lock을 구성해 응답 크기와 중복 작업을 줄이기 위해 사용" },
-      { name: "S3 / Cloudflare CDN", reason: "곡 자켓 이미지 원본 저장과 edge cache 기반 이미지 제공 구조를 만들기 위해 사용" },
+      { name: "Spring Boot", reason: "유저 기록, 곡 정보, 통계 조회처럼 도메인 경계가 분명한 API를 안정적으로 나누기 위해 사용했습니다. Controller, Service, Repository 책임을 분리해 화면 요구사항이 바뀌어도 조회 로직을 추적하기 쉽게 구성했습니다." },
+      { name: "JPA / JPQL", reason: "Entity 전체를 반환하지 않고 화면에 필요한 필드만 DTO Projection으로 조회하기 위해 사용했습니다. 연관관계 로딩 범위를 줄이고, 응답 모델을 화면 단위로 명확하게 유지하는 데 초점을 맞췄습니다." },
+      { name: "MySQL", reason: "랭크, 메달, 레벨별 분포처럼 집계가 필요한 데이터를 저장하고 계산하는 기준 저장소로 사용했습니다. 통계 API에서는 애플리케이션 순회보다 DB 집계를 우선해 조회 비용을 낮추는 방향을 선택했습니다." },
+      { name: "Redis", reason: "라이브 검색용 Read Model과 대량 갱신 중복 실행 방지 Lock을 구성하기 위해 사용했습니다. 자주 조회되는 검색 데이터를 별도로 관리해 응답 크기를 줄이고, 갱신 작업의 충돌 가능성을 낮췄습니다." },
+      { name: "S3 / Cloudflare CDN", reason: "곡 자켓 이미지 원본 저장과 반복 요청 처리를 분리하기 위해 사용했습니다. S3는 원본 저장소 역할을 맡고, Cloudflare CDN은 목록/검색 화면에서 반복되는 이미지 요청을 edge cache로 처리하도록 구성했습니다." },
     ],
     implementations: [
       {
         title: "대량 조회 성능 개선",
-        desc: "Entity 전체 조회를 줄이고 DTO Projection과 페이지네이션으로 필요한 데이터만 조회했습니다.",
+        desc: "프로필과 곡 상세 화면에서 필요한 응답 필드를 먼저 정리한 뒤 DTO Projection으로 조회했습니다. 페이지네이션을 적용해 한 번에 가져오는 기록 범위를 제한하고, Entity 그래프 전체를 로딩하지 않도록 개선했습니다.",
         tech: "DTO Projection, Pagination",
       },
       {
         title: "통계 집계 구조 개선",
-        desc: "랭크, 메달, 레벨별 통계를 애플리케이션 순회가 아닌 DB 집계와 Projection 중심으로 처리했습니다.",
+        desc: "랭크, 메달, 레벨별 분포처럼 화면에서 바로 사용하는 통계 값을 DB 집계 쿼리로 가져오도록 정리했습니다. 애플리케이션에서 전체 기록을 순회하는 흐름을 줄이고 통계 응답 모델을 분리했습니다.",
         tech: "DB Aggregation",
       },
       {
         title: "이미지 제공 구조 개선",
-        desc: "S3 원본 저장소 앞단에 Cloudflare CDN을 구성해 반복 이미지 요청을 edge cache에서 처리했습니다.",
+        desc: "곡 자켓 이미지는 동일 리소스가 여러 화면에서 반복 조회되는 특성이 있었습니다. S3 앞단에 Cloudflare CDN을 두어 원본 저장소 요청을 줄이고 이미지 로딩 체감을 개선했습니다.",
         tech: "S3, Cloudflare CDN",
       },
       {
         title: "라이브 검색 최적화",
-        desc: "전체 데이터를 내려받아 검색하던 구조를 백엔드 검색 API와 Redis Read Model 기반으로 전환했습니다.",
+        desc: "클라이언트가 전체 데이터를 받은 뒤 필터링하던 방식을 백엔드 검색 API로 전환했습니다. Redis Read Model을 사용해 검색에 필요한 데이터만 빠르게 조회하고, 응답 크기를 줄이는 방향으로 설계했습니다.",
         tech: "Redis, Search API",
       },
       {
         title: "대량 갱신 안정화",
-        desc: "playdata 갱신을 요청 흐름에서 분리하고 Redis Lock과 Worker 기반 처리 구조로 정리했습니다.",
+        desc: "playdata 갱신은 처리량이 커질 수 있어 사용자 요청과 같은 흐름에서 오래 점유하면 응답 지연으로 이어질 수 있었습니다. Redis Lock과 Worker 기반 처리로 중복 실행을 막고 비동기 갱신 흐름을 분리했습니다.",
         tech: "Redis Lock, Worker",
       },
     ],
     troubleshooting: [
       {
         problem: "Entity 전체 조회와 Lazy Loading으로 인한 N+1 가능성",
-        cause: "화면 응답에 필요한 값보다 더 큰 Entity 그래프를 조회하는 레거시 구조",
-        solution: "화면 전용 DTO Projection 조회로 변경하고, 페이지네이션을 적용해 조회 범위를 제한",
-        result: "불필요한 객체 생성과 반복 조회 가능성을 줄이고 대량 playdata 조회 흐름을 단순화",
+        cause: "화면 응답에는 일부 필드만 필요했지만 기존 조회 흐름은 Entity 중심으로 구성되어 있었습니다. 연관 데이터가 함께 접근되면서 불필요한 객체 생성과 반복 조회 가능성이 생겼고, 기록 수가 늘어날수록 비용이 커질 수 있었습니다.",
+        solution: "화면별 응답 DTO를 먼저 정의하고 JPQL DTO Projection으로 필요한 값만 조회하도록 변경했습니다. 목록성 데이터에는 페이지네이션을 적용해 조회 범위를 제한하고, 통계성 데이터는 별도 집계 쿼리로 분리했습니다.",
+        result: "대량 playdata 조회 흐름이 단순해졌고, API가 화면 요구사항에 맞는 데이터만 반환하도록 정리되었습니다. 이후 기능을 추가할 때도 Entity 구조보다 응답 모델 기준으로 변경 지점을 찾기 쉬워졌습니다.",
       },
       {
         problem: "곡 자켓 이미지 반복 요청으로 인한 로딩 지연과 원본 요청 부하",
-        cause: "곡 목록, 검색, 랭킹 화면에서 동일 이미지가 반복 조회되는 서비스 특성",
-        solution: "S3에 저장된 곡 자켓 이미지를 Cloudflare CDN으로 제공해 edge cache에서 처리",
-        result: "이미지 제공 책임을 분리하고 반복 조회 화면의 이미지 로딩 체감을 개선",
+        cause: "곡 목록, 검색, 랭킹 화면에서는 같은 곡 자켓 이미지가 여러 번 반복 조회됩니다. 이미지 요청이 원본 저장소로 직접 몰리면 화면 전환마다 로딩 체감이 떨어지고 저장소 요청 비용도 커질 수 있었습니다.",
+        solution: "S3를 원본 저장소로 두고 Cloudflare CDN을 앞단에 구성했습니다. 동일 이미지 요청은 edge cache에서 처리되도록 하여 원본 요청을 줄이고, 이미지 제공 책임을 API 서버와 분리했습니다.",
+        result: "반복 이미지가 많은 화면에서 로딩 체감을 개선할 수 있는 구조를 만들었습니다. API 서버는 데이터 제공에 집중하고, 정적 이미지 트래픽은 CDN이 담당하도록 역할이 분리되었습니다.",
       },
     ],
     result: {
-      outcomes: ["대량 데이터 조회 흐름 단순화", "통계 API 조회 비용 감소", "곡 자켓 이미지 제공 책임 분리"],
-      learnings: ["화면 요구사항에 맞는 Projection 설계", "DB 집계와 애플리케이션 처리 책임 분리", "CDN cache를 고려한 이미지 제공 구조"],
-      next: ["실제 트래픽 기반 성능 측정", "Redis 검색 Read Model 고도화", "대량 갱신 Worker 모니터링 강화"],
+      outcomes: [
+        "화면별 응답 모델을 기준으로 조회 흐름을 정리해 대량 playdata 조회 구조를 단순화했습니다.",
+        "랭크, 메달, 레벨별 통계를 DB 집계 중심으로 제공해 통계 API의 계산 책임을 명확히 분리했습니다.",
+        "곡 자켓 이미지 제공을 S3와 Cloudflare CDN으로 분리해 반복 이미지 요청을 API 서버가 직접 감당하지 않도록 했습니다.",
+      ],
+      learnings: [
+        "백엔드 최적화는 쿼리만 줄이는 일이 아니라 화면이 실제로 필요로 하는 데이터 경계를 먼저 정의하는 일이라는 점을 배웠습니다.",
+        "통계 데이터는 애플리케이션에서 모두 계산하기보다 DB 집계와 응답 모델을 함께 설계해야 유지보수와 성능을 같이 챙길 수 있었습니다.",
+        "이미지처럼 반복 조회되는 리소스는 API 서버가 직접 해결하려 하기보다 저장소, CDN, cache 책임을 분리하는 것이 중요했습니다.",
+      ],
+      next: [
+        "실제 트래픽과 사용자 행동 로그를 기반으로 API별 병목 지점을 측정하고, 자주 조회되는 화면부터 캐싱 전략을 구체화하고 싶습니다.",
+        "Redis Read Model 갱신 주기와 검색 정확도를 함께 개선해 검색 응답 속도와 데이터 최신성 사이의 균형을 더 정교하게 잡고 싶습니다.",
+        "대량 갱신 Worker의 처리 상태, 실패 재시도, Lock 만료 정책을 모니터링할 수 있게 만들어 운영 안정성을 높이고 싶습니다.",
+      ],
     },
   },
   {
@@ -520,19 +550,14 @@ function CaseStepNav({ project, activeKey }) {
 }
 
 function ProjectsOverviewSlide({ goTo }) {
+  const overviewGridClass = projects.length > 2 ? "project-overview-grid is-compact" : "project-overview-grid";
+
   return (
     <section className="slide editorial-slide" aria-label="Projects Overview">
       <div className="slide-inner project-slide-inner">
         <SectionLabel>Projects</SectionLabel>
         <div className="projects-overview">
-          <div className="projects-overview-head">
-            <h2>두 개의 프로젝트를 Case Study로 정리합니다.</h2>
-            <p>
-              각 프로젝트는 문제, 역할, 기술 선택, 구현, 트러블슈팅, 회고 흐름으로 나누어 발표자료처럼
-              한 화면에 하나의 메시지가 보이도록 구성했습니다.
-            </p>
-          </div>
-          <div className="project-overview-grid">
+          <div className={overviewGridClass}>
             {projects.map((project) => (
               <article className={`project-overview-card ${project.theme}`} key={project.id}>
                 <div>
@@ -563,6 +588,11 @@ function ProjectsOverviewSlide({ goTo }) {
 function CaseStudySlide({ project, section }) {
   const Icon = section.icon;
   const eyebrowLabel = section.key === "intro" ? project.label : section.label;
+  const metaItems = project.meta ?? [
+    { label: "Period", value: project.period },
+    { label: "Type", value: project.team },
+    { label: "Role", value: project.role },
+  ];
 
   return (
     <section className={`slide editorial-slide case-slide ${project.theme}`} aria-label={`${project.title} ${section.label}`}>
@@ -586,18 +616,12 @@ function CaseStudySlide({ project, section }) {
                 <h3>{project.intro[0]}</h3>
                 <p>{project.intro[1]}</p>
                 <div className="case-meta-grid">
-                  <div>
-                    <span>Period</span>
-                    <strong>{project.period}</strong>
-                  </div>
-                  <div>
-                    <span>Type</span>
-                    <strong>{project.team}</strong>
-                  </div>
-                  <div>
-                    <span>Role</span>
-                    <strong>{project.role}</strong>
-                  </div>
+                  {metaItems.map((item) => (
+                    <div key={item.label}>
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                    </div>
+                  ))}
                 </div>
                 <div className="project-keywords">
                   {project.keywords.map((keyword) => (
@@ -610,28 +634,62 @@ function CaseStudySlide({ project, section }) {
           )}
 
           {section.key === "problem" && (
-            <div className="case-split-layout">
-              <div className="case-message">
-                <h3>{project.problem.title}</h3>
-                <p>문제와 목표를 먼저 분리해, 구현의 방향이 기술 선택보다 앞에 오도록 정리했습니다.</p>
-              </div>
-              <div className="case-card-stack">
+            <div className={`case-problem-layout${project.problem.image ? " has-image" : ""}`}>
+              {project.problem.image && (
+                <figure className="case-reference-image">
+                  <img src={project.problem.image} alt={project.problem.imageCaption} />
+                  <figcaption>
+                    <strong>{project.problem.imageCaption}</strong>
+                    <span>{project.problem.imageDescription}</span>
+                  </figcaption>
+                  <div className="problem-data-compare" aria-label="공식 데이터와 사용자 니즈 비교">
+                    <div>
+                      <strong>공식 데이터</strong>
+                      <p>{project.problem.officialData.join(" · ")}</p>
+                    </div>
+                    <div>
+                      <strong>사용자가 알고 싶은 것</strong>
+                      <p>{project.problem.userData.join(" · ")}</p>
+                    </div>
+                  </div>
+                </figure>
+              )}
+              <div className="case-card-grid problem-cards">
                 {project.problem.items.map((item) => (
                   <article className="case-info-card" key={item.label}>
                     <span>{item.label}</span>
+                    {item.headline && <h4>{item.headline}</h4>}
                     <p>{item.text}</p>
                   </article>
                 ))}
               </div>
-              <ProjectImagePlaceholder label="문제 흐름 다이어그램" />
             </div>
           )}
 
           {section.key === "role" && (
-            <div className="case-split-layout role">
-              <div className="case-message">
-                <h3>제가 맡은 일은 기능 구현보다 흐름을 명확히 만드는 것이었습니다.</h3>
-                <p>도메인 책임과 API 응답, 저장소 흐름이 서로 섞이지 않도록 경계를 잡는 데 집중했습니다.</p>
+            <div className="case-role-layout">
+              <div className="role-summary-card">
+                <span>My Role</span>
+                <p>{project.roleSummary ?? "프로젝트의 핵심 백엔드 흐름과 API 응답 구조를 담당했습니다."}</p>
+              </div>
+              <div className="role-flow-diagram" aria-label="Before and after search flow diagram">
+                <article>
+                  <span>Before</span>
+                  <strong>Client-side Search</strong>
+                  <p>전체 데이터 다운로드</p>
+                  <p>브라우저 검색·필터링</p>
+                  <p>응답 크기 증가</p>
+                </article>
+                <div className="flow-arrow" aria-hidden="true">
+                  <ArrowRight />
+                </div>
+                <article className="is-after">
+                  <span>After</span>
+                  <strong>Backend Search</strong>
+                  <p>검색 조건 전달</p>
+                  <p>Redis Read Model 조회</p>
+                  <p>필요한 결과만 응답</p>
+                </article>
               </div>
               <div className="case-role-list">
                 {project.myRole.map((role) => (
@@ -641,16 +699,11 @@ function CaseStudySlide({ project, section }) {
                   </article>
                 ))}
               </div>
-              <ProjectImagePlaceholder label="담당 영역 이미지" />
             </div>
           )}
 
           {section.key === "tech" && (
-            <div className="case-tech-layout">
-              <div className="case-message">
-                <h3>기술은 목록이 아니라 선택 이유와 함께 보여줍니다.</h3>
-                <p>각 기술이 프로젝트의 문제를 어떻게 해결했는지 중심으로 정리했습니다.</p>
-              </div>
+            <div className="case-tech-layout no-message">
               <div className="case-tech-grid">
                 {project.techStack.map((tech) => (
                   <article className="case-info-card" key={tech.name}>
@@ -663,10 +716,7 @@ function CaseStudySlide({ project, section }) {
           )}
 
           {section.key === "implementation" && (
-            <div className="case-implementation-layout">
-              <div className="case-message compact">
-                <h3>핵심 구현을 기능 단위로 나누어 설명합니다.</h3>
-              </div>
+            <div className="case-implementation-layout no-message">
               <div className="case-implementation-grid">
                 {project.implementations.map((item) => (
                   <article className="case-build-card" key={item.title}>
@@ -676,7 +726,6 @@ function CaseStudySlide({ project, section }) {
                   </article>
                 ))}
               </div>
-              <ProjectImagePlaceholder label="구현 구조 이미지" />
             </div>
           )}
 
@@ -727,7 +776,6 @@ function ResultColumn({ title, items }) {
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <ProjectImagePlaceholder label={`${title} 이미지`} />
     </article>
   );
 }
