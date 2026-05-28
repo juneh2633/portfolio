@@ -6,9 +6,7 @@ import {
   Bug,
   ImageIcon,
   Layers,
-  ListChecks,
   Target,
-  Trophy,
   UserRound,
   Wrench,
 } from "lucide-react";
@@ -179,14 +177,50 @@ const projects = [
       "백엔드 검색 API와 Redis Read Model로 목록 탐색 흐름을 개선했습니다.",
       "Redis Lock과 Worker 기반 구조로 대량 갱신 처리 방향을 설계했습니다.",
     ],
+    roleHighlights: [
+      {
+        title: "API Design",
+        text: "프로필, 곡 상세, 랭킹, 통계 화면이 각각 필요한 데이터만 받을 수 있도록 응답 구조를 설계했습니다.",
+      },
+      {
+        title: "Query & Statistics",
+        text: "랭크, 메달, 레벨별 통계처럼 반복 계산이 필요한 데이터는 DB 집계와 DTO Projection 중심으로 정리했습니다.",
+      },
+      {
+        title: "Delivery & Update Flow",
+        text: "이미지는 S3와 Cloudflare CDN으로 분리하고, 대량 playdata 갱신은 Worker 기반 처리 흐름으로 분리하는 방향을 잡았습니다.",
+      },
+    ],
     roleSummary:
-      "저는 기록·랭킹·통계 데이터를 화면별로 빠르게 제공하기 위한 백엔드 API와 조회 구조를 담당했습니다.",
+      "저는 기록·랭킹·통계 데이터를 화면에서 바로 사용할 수 있도록 백엔드 API와 조회 흐름을 설계했습니다.",
     techStack: [
-      { name: "Spring Boot", reason: "유저 기록, 곡 정보, 통계 조회처럼 도메인 경계가 분명한 API를 안정적으로 나누기 위해 사용했습니다. Controller, Service, Repository 책임을 분리해 화면 요구사항이 바뀌어도 조회 로직을 추적하기 쉽게 구성했습니다." },
-      { name: "JPA / JPQL", reason: "Entity 전체를 반환하지 않고 화면에 필요한 필드만 DTO Projection으로 조회하기 위해 사용했습니다. 연관관계 로딩 범위를 줄이고, 응답 모델을 화면 단위로 명확하게 유지하는 데 초점을 맞췄습니다." },
-      { name: "MySQL", reason: "랭크, 메달, 레벨별 분포처럼 집계가 필요한 데이터를 저장하고 계산하는 기준 저장소로 사용했습니다. 통계 API에서는 애플리케이션 순회보다 DB 집계를 우선해 조회 비용을 낮추는 방향을 선택했습니다." },
-      { name: "Redis", reason: "라이브 검색용 Read Model과 대량 갱신 중복 실행 방지 Lock을 구성하기 위해 사용했습니다. 자주 조회되는 검색 데이터를 별도로 관리해 응답 크기를 줄이고, 갱신 작업의 충돌 가능성을 낮췄습니다." },
-      { name: "S3 / Cloudflare CDN", reason: "곡 자켓 이미지 원본 저장과 반복 요청 처리를 분리하기 위해 사용했습니다. S3는 원본 저장소 역할을 맡고, Cloudflare CDN은 목록/검색 화면에서 반복되는 이미지 요청을 edge cache로 처리하도록 구성했습니다." },
+      { name: "Spring Boot", reason: "유저 기록, 곡 정보, 랭킹, 통계 API를 도메인 경계에 맞춰 나누고 안정적으로 운영하기 위해 선택했습니다." },
+      { name: "JPA / QueryDSL", reason: "화면에 필요한 필드만 조회하고, 조건이 많은 검색·통계 쿼리를 명확하게 구성하기 위해 사용했습니다." },
+      { name: "Redis", reason: "검색용 Read Model, 대량 갱신 Lock, 비동기 처리 흐름을 구성하기 위한 보조 저장소로 사용했습니다." },
+      { name: "MySQL", reason: "플레이 기록, 곡 정보, 랭킹, 메달 통계를 저장하고 집계하는 기준 데이터베이스로 사용했습니다." },
+      { name: "S3 / Cloudflare CDN", reason: "곡 자켓 이미지 원본 저장과 반복 요청 처리를 분리해 이미지 트래픽을 API 서버 밖에서 처리하도록 구성했습니다." },
+    ],
+    fixes: [
+      {
+        title: "Entity 중심 조회",
+        result: "DTO Projection",
+        desc: "화면 응답에 필요한 필드만 조회하도록 바꿔 불필요한 Entity 로딩과 응답 비용을 줄였습니다.",
+      },
+      {
+        title: "반복 통계 계산",
+        result: "DB 집계",
+        desc: "랭크, 메달, 레벨별 통계를 애플리케이션 순회 대신 집계 쿼리와 전용 응답 모델로 정리했습니다.",
+      },
+      {
+        title: "이미지 반복 요청",
+        result: "CDN Cache",
+        desc: "곡 자켓 이미지는 S3에 저장하고 Cloudflare CDN을 거치게 해 반복 접근 비용을 낮췄습니다.",
+      },
+      {
+        title: "대량 갱신 요청",
+        result: "Worker 구조",
+        desc: "playdata 갱신이 사용자 응답 흐름을 막지 않도록 Lock과 Worker 기반 처리 방향으로 분리했습니다.",
+      },
     ],
     implementations: [
       {
@@ -337,13 +371,11 @@ const projects = [
 ];
 
 const caseStudySections = [
-  { key: "intro", nav: "Intro", label: "Project Intro", icon: Layers },
-  { key: "problem", nav: "Problem", label: "Problem & Goal", icon: Target },
-  { key: "role", nav: "Role", label: "My Role", icon: UserRound },
-  { key: "tech", nav: "Tech", label: "Tech Stack", icon: Wrench },
-  { key: "implementation", nav: "Build", label: "Implementation", icon: ListChecks },
-  { key: "troubleshooting", nav: "Fix", label: "Troubleshooting", icon: Bug },
-  { key: "result", nav: "Result", label: "Result & Learning", icon: Trophy },
+  { key: "intro", nav: "Intro", label: "서비스 소개 + 운영 성과", icon: Layers },
+  { key: "problem", nav: "Problem", label: "Problem", icon: Target },
+  { key: "role", nav: "Role", label: "내가 맡은 백엔드 책임", icon: UserRound },
+  { key: "tech", nav: "Tech", label: "사용 기술과 선택 이유", icon: Wrench },
+  { key: "fix", nav: "Fix", label: "가장 의미 있었던 개선 사례", icon: Bug },
 ];
 
 function padSlide(number) {
@@ -588,6 +620,15 @@ function ProjectsOverviewSlide({ goTo }) {
 function CaseStudySlide({ project, section }) {
   const Icon = section.icon;
   const eyebrowLabel = section.key === "intro" ? project.label : section.label;
+  const roleItems = project.roleHighlights ?? project.myRole.map((role) => ({ title: "Role", text: role }));
+  const fixItems =
+    project.fixes ??
+    project.implementations?.map((item) => ({
+      title: item.title,
+      result: item.tech,
+      desc: item.desc,
+    })) ??
+    [];
   const metaItems = project.meta ?? [
     { label: "Period", value: project.period },
     { label: "Type", value: project.team },
@@ -672,30 +713,45 @@ function CaseStudySlide({ project, section }) {
                 <span>My Role</span>
                 <p>{project.roleSummary ?? "프로젝트의 핵심 백엔드 흐름과 API 응답 구조를 담당했습니다."}</p>
               </div>
-              <div className="role-flow-diagram" aria-label="Before and after search flow diagram">
-                <article>
-                  <span>Before</span>
-                  <strong>Client-side Search</strong>
-                  <p>전체 데이터 다운로드</p>
-                  <p>브라우저 검색·필터링</p>
-                  <p>응답 크기 증가</p>
-                </article>
+              <div className="role-hub-diagram" aria-label="Screens to backend API responsibilities diagram">
+                <section className="role-hub-column">
+                  <span>Screens</span>
+                  <p>User Profile</p>
+                  <p>Song Detail</p>
+                  <p>Ranking</p>
+                  <p>Score Analysis</p>
+                </section>
                 <div className="flow-arrow" aria-hidden="true">
                   <ArrowRight />
                 </div>
-                <article className="is-after">
-                  <span>After</span>
-                  <strong>Backend Search</strong>
-                  <p>검색 조건 전달</p>
-                  <p>Redis Read Model 조회</p>
-                  <p>필요한 결과만 응답</p>
-                </article>
+                <section className="role-api-hub">
+                  <strong>Backend API Layer</strong>
+                  <p>Screen-based Response</p>
+                  <p>DTO Projection</p>
+                  <p>DB Aggregation</p>
+                  <p>Async Update</p>
+                  <p>Image Delivery</p>
+                </section>
+                <div className="flow-arrow" aria-hidden="true">
+                  <ArrowRight />
+                </div>
+                <section className="role-hub-column">
+                  <span>Responsibilities</span>
+                  <p>기록 데이터 제공</p>
+                  <p>랭킹 조회</p>
+                  <p>통계 집계</p>
+                  <p>이미지 전달</p>
+                  <p>대량 갱신 처리</p>
+                </section>
               </div>
               <div className="case-role-list">
-                {project.myRole.map((role) => (
-                  <article key={role}>
+                {roleItems.map((role) => (
+                  <article key={`${role.title}-${role.text}`}>
                     <span />
-                    <p>{role}</p>
+                    <div>
+                      <h4>{role.title}</h4>
+                      <p>{role.text}</p>
+                    </div>
                   </article>
                 ))}
               </div>
@@ -715,68 +771,25 @@ function CaseStudySlide({ project, section }) {
             </div>
           )}
 
-          {section.key === "implementation" && (
-            <div className="case-implementation-layout no-message">
-              <div className="case-implementation-grid">
-                {project.implementations.map((item) => (
-                  <article className="case-build-card" key={item.title}>
-                    <span>{item.tech}</span>
-                    <h4>{item.title}</h4>
-                    <p>{item.desc}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {section.key === "troubleshooting" && (
-            <div className="case-trouble-layout">
-              {project.troubleshooting.map((item) => (
-                <article className="trouble-card" key={item.problem}>
-                  <h3>{item.problem}</h3>
-                  <dl>
-                    <div>
-                      <dt>Cause</dt>
-                      <dd>{item.cause}</dd>
-                    </div>
-                    <div>
-                      <dt>Solution</dt>
-                      <dd>{item.solution}</dd>
-                    </div>
-                    <div>
-                      <dt>Result</dt>
-                      <dd>{item.result}</dd>
-                    </div>
-                  </dl>
+          {section.key === "fix" && (
+            <div className="case-fix-layout">
+              {fixItems.map((item, index) => (
+                <article className="case-fix-card" key={`${item.title}-${item.result}`}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div className="fix-change-line">
+                    <strong>{item.title}</strong>
+                    <ArrowRight />
+                    <strong>{item.result}</strong>
+                  </div>
+                  <p>{item.desc}</p>
                 </article>
               ))}
-            </div>
-          )}
-
-          {section.key === "result" && (
-            <div className="case-result-layout">
-              <ResultColumn title="Result" items={project.result.outcomes} />
-              <ResultColumn title="Learning" items={project.result.learnings} />
-              <ResultColumn title="Next" items={project.result.next} />
             </div>
           )}
         </div>
       </div>
       <div className="bottom-accent" />
     </section>
-  );
-}
-
-function ResultColumn({ title, items }) {
-  return (
-    <article className="case-result-column">
-      <span>{title}</span>
-      <ul>
-        {items.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-    </article>
   );
 }
 
