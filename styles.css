@@ -135,6 +135,38 @@ strong {
   overflow: hidden;
 }
 
+.pdf-export-source {
+  position: fixed;
+  top: 0;
+  left: -10000px;
+  width: 1280px;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pdf-export-page {
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(32, 36, 38, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 36, 38, 0.022) 1px, transparent 1px),
+    var(--background);
+  background-size: 52px 52px;
+}
+
+.pdf-export-page .slide {
+  display: block !important;
+  width: 1280px;
+  min-height: 720px;
+  height: 720px;
+}
+
+.pdf-export-page .pdf-download-btn {
+  display: none;
+}
+
 .slide {
   width: 100%;
   height: 100%;
@@ -1907,6 +1939,48 @@ strong {
   font-weight: 800;
 }
 
+.pdf-download-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(32, 36, 38, 0.18);
+  border-radius: 999px;
+  background: rgba(248, 249, 249, 0.72);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.pdf-download-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--foreground);
+  background: rgba(248, 249, 249, 0.92);
+  color: var(--foreground);
+}
+
+.pdf-download-btn:disabled {
+  cursor: wait;
+  opacity: 0.62;
+  transform: none;
+}
+
+.pdf-download-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
 .icon-btn {
   display: grid;
   place-items: center;
@@ -2285,5 +2359,71 @@ strong {
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
+  }
+
+  .pdf-download-btn {
+    position: static;
+    margin-top: 18px;
+  }
+}
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100%;
+    background: #fff;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .deck-shell {
+    display: block;
+    min-height: auto;
+    background:
+      linear-gradient(rgba(32, 36, 38, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32, 36, 38, 0.018) 1px, transparent 1px),
+      var(--background);
+    background-size: 52px 52px;
+  }
+
+  .rail,
+  .controls,
+  .pdf-download-btn {
+    display: none !important;
+  }
+
+  .slides {
+    height: auto;
+    overflow: visible;
+  }
+
+  .is-hidden-wrapper,
+  .is-current-wrapper {
+    display: block;
+  }
+
+  .slide {
+    display: block !important;
+    min-height: 100vh;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .is-current-wrapper > .slide {
+    animation: none;
+  }
+
+  .bottom-accent {
+    print-color-adjust: exact;
   }
 }

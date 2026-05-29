@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Bug,
+  Download,
   ImageIcon,
   Layers,
   Target,
@@ -793,7 +796,7 @@ function CaseStudySlide({ project, section }) {
   );
 }
 
-function ContactSlide() {
+function ContactSlide({ onExportPdf, isExporting }) {
   return (
     <section className="slide editorial-slide contact-slide" aria-label="Contact">
       <div className="slide-inner contact-inner">
@@ -819,6 +822,10 @@ function ContactSlide() {
           <strong>왕준혁</strong>
           <span>Backend Developer</span>
         </div>
+        <button className="pdf-download-btn" type="button" onClick={onExportPdf} disabled={isExporting}>
+          <Download />
+          {isExporting ? "생성 중" : "PDF 저장"}
+        </button>
       </div>
       <div className="bottom-accent" />
     </section>
@@ -847,12 +854,29 @@ const projectIntroIndexes = Object.fromEntries(
   projects.map((project) => [project.id, slideDefinitions.findIndex((slide) => slide.key === `${project.id}-intro`)]),
 );
 
+async function waitForImages(container) {
+  const images = Array.from(container.querySelectorAll("img"));
+  await Promise.all(
+    images.map((image) => {
+      if (image.complete && image.naturalWidth > 0) {
+        return Promise.resolve();
+      }
+
+      return new Promise((resolve) => {
+        image.onload = resolve;
+        image.onerror = resolve;
+      });
+    }),
+  );
+}
+
 export default function App() {
   const initialSlide = useMemo(() => {
     const slideParam = Number(new URLSearchParams(window.location.search).get("slide"));
     return Number.isInteger(slideParam) && slideParam >= 0 && slideParam < SLIDES.length ? slideParam : 0;
   }, []);
   const [active, setActive] = useState(initialSlide);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -870,6 +894,56 @@ export default function App() {
   }, []);
 
   const goTo = (index) => setActive((index + SLIDES.length) % SLIDES.length);
+
+  const exportPdf = async () => {
+    if (isExporting) {
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      const exportSource = document.querySelector(".pdf-export-source");
+      const pages = Array.from(exportSource?.querySelectorAll(".pdf-export-page") ?? []);
+
+      if (pages.length === 0) {
+        throw new Error("PDF export pages were not found.");
+      }
+
+      await waitForImages(exportSource);
+
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: [1280, 720],
+        compress: true,
+      });
+
+      for (const [index, page] of pages.entries()) {
+        const canvas = await html2canvas(page, {
+          backgroundColor: "#f2f4f6",
+          logging: false,
+          scale: 1.5,
+          useCORS: true,
+          windowWidth: 1280,
+          windowHeight: 720,
+        });
+        const imageData = canvas.toDataURL("image/jpeg", 0.92);
+
+        if (index > 0) {
+          pdf.addPage([1280, 720], "landscape");
+        }
+
+        pdf.addImage(imageData, "JPEG", 0, 0, 1280, 720);
+      }
+
+      pdf.save("왕준혁_Backend_Portfolio.pdf");
+    } catch (error) {
+      console.error(error);
+      alert("PDF 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="deck-shell">
@@ -895,10 +969,18 @@ export default function App() {
       <main className="slides" id="slides">
         {slideDefinitions.map(({ component: Slide, key }, index) => (
           <div className={index === active ? "is-current-wrapper" : "is-hidden-wrapper"} key={key}>
-            <Slide goTo={goTo} active={active} />
+            <Slide goTo={goTo} active={active} onExportPdf={exportPdf} isExporting={isExporting} />
           </div>
         ))}
       </main>
+
+      <div className="pdf-export-source" aria-hidden="true">
+        {slideDefinitions.map(({ component: Slide, key }) => (
+          <div className="pdf-export-page" key={`pdf-${key}`}>
+            <Slide goTo={goTo} active={active} onExportPdf={exportPdf} isExporting={isExporting} />
+          </div>
+        ))}
+      </div>
 
       <div className="controls" aria-label="Slide controls">
         <button className="icon-btn" type="button" aria-label="Previous slide" title="Previous" onClick={() => goTo(active - 1)}>
