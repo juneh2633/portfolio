@@ -6,15 +6,24 @@ import {
   ArrowRight,
   ArrowUpRight,
   Bug,
+  Activity,
+  Boxes,
+  Cloud,
+  Code2,
+  Database,
   Download,
+  GitBranch,
   ImageIcon,
   Layers,
-  Target,
+  Server,
+  ShieldCheck,
   UserRound,
   Wrench,
 } from "lucide-react";
 import profileImage from "../assets/profile.png";
 import popnAnalysisImage from "../assets/projects/popn/analysis.png";
+import popnCoverAnalysisImage from "../assets/projects/popn/cover-analysis.png";
+import popnCoverProfileImage from "../assets/projects/popn/cover-profile.png";
 import popnHomeImage from "../assets/projects/popn/home.png";
 import popnProblemImage from "../assets/projects/popn/popnproblem.png";
 import popnProfileImage from "../assets/projects/popn/profile.png";
@@ -120,6 +129,299 @@ const skills = [
   },
 ];
 
+const popnTechStacks = [
+  {
+    category: "Backend Core",
+    icon: Code2,
+    summary: "Spring Boot 기반 REST API와 인증 흐름을 구현했습니다.",
+    tags: ["Java 17", "Spring Boot 3.2.4", "Spring MVC", "Validation", "Jackson"],
+  },
+  {
+    category: "Security & API",
+    icon: ShieldCheck,
+    summary: "JWT 인증과 API 문서화를 서비스 흐름에 맞춰 구성했습니다.",
+    tags: ["Spring Security", "JWT Authentication", "SpringDoc OpenAPI", "Swagger UI", "Exception Handling"],
+  },
+  {
+    category: "Persistence",
+    icon: Database,
+    summary: "화면에 필요한 데이터만 조회하도록 Projection과 동적 쿼리를 사용했습니다.",
+    tags: ["Spring Data JPA", "Hibernate", "Querydsl", "DTO Projection", "MySQL 8.0"],
+  },
+  {
+    category: "Architecture",
+    icon: Boxes,
+    summary: "도메인과 외부 인프라를 분리해 변경 지점을 명확히 했습니다.",
+    tags: ["Clean Architecture", "Hexagonal", "Multi Module", "Port & Adapter", "Domain Model"],
+  },
+  {
+    category: "Async & Storage",
+    icon: GitBranch,
+    summary: "비동기 처리와 이미지 리소스 제공 책임을 애플리케이션 서버에서 분리했습니다.",
+    tags: ["Redis", "Amazon MQ", "Worker", "S3", "Cloudflare CDN"],
+  },
+  {
+    category: "Delivery & Monitoring",
+    icon: Activity,
+    summary: "빌드, 테스트, 배포, 마이그레이션과 관측 가능성까지 운영 흐름에 포함했습니다.",
+    tags: ["Gradle Multi Module", "JUnit 5", "Docker Compose", "Jenkins", "Flyway", "Prometheus", "Grafana", "Loki"],
+  },
+];
+
+const popnTechMeta = [
+  { label: "Type", value: "Team Project", icon: Boxes },
+  { label: "Members", value: "4", icon: UserRound },
+  { label: "Role", value: "Backend Developer", icon: Wrench },
+];
+
+const popnStackReasons = [
+  {
+    title: "Java / Spring Boot",
+    reason:
+      "게임 기록, 랭킹, 인증처럼 상태와 규칙이 많은 도메인을 안정적으로 다루기 위해 Spring Boot 기반 REST API 서버로 구성했습니다.",
+    points: ["REST API", "Security", "JPA", "Actuator"],
+  },
+  {
+    title: "Gradle Multi Module",
+    reason:
+      "Controller, UseCase, Domain, Infra 코드가 섞이지 않도록 모듈을 나누고 계층 간 의존 방향을 명확히 제한했습니다.",
+    points: ["presentation", "application", "domain", "infra"],
+  },
+  {
+    title: "Clean / Hexagonal",
+    reason:
+      "도메인 규칙을 HTTP, DB, Redis, MQ 같은 외부 기술에서 분리해 테스트와 변경에 강한 구조를 만들고자 했습니다.",
+    points: ["UseCase", "Port", "Adapter", "Domain"],
+  },
+  {
+    title: "Security / OpenAPI",
+    reason:
+      "사용자별 데이터와 관리자 기능은 JWT로 보호하고, 프론트엔드 협업을 위해 API 계약을 문서로 동기화했습니다.",
+    points: ["Spring Security", "JWT", "SpringDoc", "Swagger UI"],
+  },
+  {
+    title: "MySQL / JPA",
+    reason:
+      "곡, 채보, 유저, 기록처럼 관계와 정합성이 중요한 데이터를 트랜잭션 기반으로 다루기 위해 사용했습니다.",
+    points: ["Transaction", "Relation", "Migration"],
+  },
+  {
+    title: "Querydsl / JPQL Projection",
+    reason:
+      "대량 조회 API에서 Entity 전체 로딩을 줄이고 화면에 필요한 컬럼만 DTO로 조회해 응답 비용을 낮췄습니다.",
+    points: ["DTO Projection", "Dynamic Query", "Pagination"],
+  },
+  {
+    title: "Redis / Amazon MQ",
+    reason:
+      "검색 캐시, TTL 토큰, 분산 락, 대량 갱신 job을 분리해 빠른 응답과 운영 안정성을 함께 확보했습니다.",
+    points: ["Cache", "Lock", "Async Job", "TTL"],
+  },
+  {
+    title: "S3 / Cloudflare CDN",
+    reason:
+      "곡 자켓 이미지를 애플리케이션 서버에서 분리하고 반복 요청을 edge cache에서 처리하도록 구성했습니다.",
+    points: ["Image Delivery", "Edge Cache", "S3 Origin"],
+  },
+  {
+    title: "Docker / Jenkins / Flyway",
+    reason:
+      "빌드, 배포, DB migration 흐름을 자동화해 운영 환경의 재현성과 배포 추적성을 높이기 위해 사용했습니다.",
+    points: ["CI/CD", "Docker Image", "DB Migration"],
+  },
+  {
+    title: "Prometheus / Grafana / Loki",
+    reason:
+      "API latency, DB pool, thread, log를 관찰해 장애 원인을 추적하고 운영 상태를 확인할 수 있도록 설계했습니다.",
+    points: ["Metrics", "Logs", "Dashboard", "Alert"],
+  },
+];
+
+const popnTroubleshootingItems = [
+  {
+    title: "이미지 로딩 최적화",
+    before: "S3 원본 직접 요청",
+    after: "Cloudflare CDN 캐싱",
+    problem:
+      "곡 목록, 검색, 랭킹 화면에서 같은 자켓 이미지가 반복 요청되어 이미지 응답 지연과 원본 요청 부하가 커질 수 있었습니다.",
+    solution:
+      "S3를 원본 저장소로 유지하고 Cloudflare CDN을 앞단에 배치해 클라이언트가 CDN URL로 이미지를 요청하도록 변경했습니다.",
+    result: "반복 이미지 요청을 edge cache에서 처리해 이미지 로딩 체감과 S3 요청 부하를 줄였습니다.",
+  },
+  {
+    title: "대량 플레이데이터 조회 최적화",
+    before: "Entity 조회 + Lazy Loading",
+    after: "JPQL DTO Projection",
+    metric: "13s → 200ms",
+    problem:
+      "유저의 플레이데이터가 많아질수록 Entity 전체 조회와 연관 객체 접근으로 N+1 가능성과 DTO 변환 비용이 커졌습니다.",
+    solution:
+      "화면에 필요한 필드만 JPQL DTO Projection으로 한 번에 조회하도록 바꾸고, Entity 전체 로딩과 lazy loading 접근을 제거했습니다.",
+    result: "필요 컬럼만 조회하도록 변경해 API 응답 시간을 13초에서 200ms 수준으로 개선했습니다.",
+  },
+  {
+    title: "통계 API 집계 개선",
+    before: "Java Loop 집계",
+    after: "DB Group By 집계",
+    problem:
+      "레벨별 랭크와 메달 개수를 전체 playdata를 메모리에 올린 뒤 Java loop로 계산해 데이터 증가에 취약했습니다.",
+    solution:
+      "MySQL의 group by, count, sum을 활용해 집계 결과만 Projection으로 가져오도록 조회 구조를 변경했습니다.",
+    result: "애플리케이션 CPU와 메모리 사용량을 줄이고 통계 응답 payload를 단순화했습니다.",
+  },
+  {
+    title: "대량 갱신 작업 안정화",
+    before: "Request Thread 처리",
+    after: "Redis Lock + MQ Worker",
+    problem:
+      "플레이데이터 갱신은 upsert, history 저장, popclass 재계산이 포함되어 HTTP 요청 안에서 처리하기에 무거웠습니다.",
+    solution:
+      "갱신 요청은 jobId를 반환하고, Redis Lock과 Amazon MQ 기반 worker가 chunk 단위로 비동기 처리하도록 설계했습니다.",
+    result: "HTTP timeout과 DB connection 장기 점유를 줄이고 동일 유저의 중복 갱신을 방지했습니다.",
+  },
+];
+
+const cloudTechStacks = [
+  {
+    category: "Backend Framework",
+    icon: Code2,
+    tags: ["ASP.NET Core 10", "Minimal APIs", ".NET 10", "C#"],
+  },
+  {
+    category: "Architecture",
+    icon: Boxes,
+    tags: ["Clean Architecture", "Outbox Events", "Feature Endpoints", "Result Pattern"],
+  },
+  {
+    category: "Database / ORM",
+    icon: Database,
+    tags: ["PostgreSQL", "EF Core 10", "Npgsql", "Migrations"],
+  },
+  {
+    category: "Upload / Realtime",
+    icon: GitBranch,
+    tags: ["tusd", "tus hooks", "Redis Pub/Sub", "SSE"],
+  },
+  {
+    category: "Media Processing",
+    icon: ImageIcon,
+    tags: ["MediaWorker", "FFmpeg", "ImageSharp", "Thumbnail Pipeline"],
+  },
+  {
+    category: "Testing / Ops",
+    icon: Activity,
+    tags: ["NUnit", "Testcontainers", "Docker Compose", "nginx", "GitLab CI"],
+  },
+];
+
+const cloudStackReasons = [
+  {
+    title: "ASP.NET Core Minimal APIs & Clean Architecture",
+    reason:
+      "컨트롤러 없이 Feature 단위 엔드포인트를 구성해 API 응집도를 높이고, Core와 Infrastructure를 분리해 DB와 외부 구현 변경이 유스케이스에 직접 번지지 않게 했습니다.",
+    points: ["Minimal APIs", "Feature Endpoint", "Core / Infra Separation"],
+  },
+  {
+    title: "tusd Hook 기반 업로드 Finalize",
+    reason:
+      "대용량 파일 업로드를 안정적으로 처리하기 위해 tusd hook으로 pre-create, post-finish 흐름을 분리하고, 업로드 세션 검증, quota 예약, temp-to-final 이동을 API 유스케이스에서 마무리했습니다.",
+    points: ["tusd", "Upload Session", "Finalize Flow"],
+  },
+  {
+    title: "Outbox 기반 비동기 이벤트 처리",
+    reason:
+      "업로드 완료 이후 SSE 알림, notification projection, MediaWorker 작업을 요청 흐름에서 분리하기 위해 Outbox 테이블과 polling worker, retry/backoff, dead letter 상태를 구성했습니다.",
+    points: ["Outbox Table", "Retry", "Dead Letter"],
+  },
+  {
+    title: "Redis Pub/Sub & MediaWorker",
+    reason:
+      "썸네일 생성과 미디어 메타데이터 추출은 Redis Pub/Sub으로 별도 Worker에 전달해 API 응답성과 무거운 후처리 작업을 느슨하게 분리했습니다.",
+    points: ["Redis Pub/Sub", "MediaWorker", "BackgroundService"],
+  },
+  {
+    title: "FluentValidation & FluentResults",
+    reason:
+      "권한 없음, 용량 초과, 잘못된 이동 요청 같은 비즈니스 실패를 예외가 아닌 Result로 반환하고 API boundary에서 일관된 HTTP 에러로 변환했습니다.",
+    points: ["Validation", "Result Pattern", "HTTP Mapping"],
+  },
+  {
+    title: "ImageSharp & FFmpeg",
+    reason:
+      "이미지와 비디오 썸네일을 생성하되 외부 프로세스와 대용량 입력이 Worker 안정성을 해치지 않도록 size guard, pixel limit, timeout, process kill을 함께 적용했습니다.",
+    points: ["ImageSharp", "FFmpeg", "Resource Guard"],
+  },
+];
+
+const cloudTroubleshootingItems = [
+  {
+    title: "FFmpeg hang 및 대용량 미디어 방어",
+    before: "무제한 미디어 처리",
+    after: "Timeout + Size Guard",
+    problem:
+      "비정상 비디오나 초대형 이미지가 들어오면 FFmpeg가 종료되지 않거나 이미지 디코딩 과정에서 Worker 메모리와 temp storage를 오래 점유할 위험이 있었습니다.",
+    solution:
+      "이미지 100MB, 비디오 500MB, 이미지 16MP 제한을 두고, FFmpeg 실행에는 30초 timeout과 process tree kill, finally 기반 temp file cleanup을 적용했습니다.",
+    result: "비정상 입력이 들어와도 Worker가 장시간 hang되거나 서버 리소스가 고갈되는 상황을 방어했습니다.",
+  },
+  {
+    title: "업로드 finalize 정합성 보장",
+    before: "Storage 이동 후 DB 실패",
+    after: "Compensation + Recovery",
+    problem:
+      "tusd 업로드 완료 후 temp 파일을 final storage로 옮긴 뒤 DB 저장이 실패하면 파일은 존재하지만 DB 레코드나 quota/session 상태는 어긋나는 문제가 생길 수 있었습니다.",
+    solution:
+      "DB 변경은 transaction으로 묶고, 실패 시 final 파일을 temp로 되돌리는 보상 로직과 오래 FINALIZING 상태에 머문 세션을 복구하는 background recovery를 추가했습니다.",
+    result: "업로드 finalize 중간 실패에도 orphan object, quota 불일치, stuck session을 줄일 수 있는 복구 가능한 흐름을 만들었습니다.",
+  },
+  {
+    title: "Outbox dispatch 실패 추적",
+    before: "HTTP 흐름에서 즉시 publish",
+    after: "Outbox Polling + Retry",
+    problem:
+      "업로드 완료 후 SSE 알림, notification projection, MediaWorker 작업을 즉시 publish하면 Redis 장애나 dispatcher 실패가 사용자 요청 실패와 강하게 결합될 수 있었습니다.",
+    solution:
+      "outbox_events 테이블에 이벤트 상태와 attempt, worker lock, last error를 저장하고, BackgroundService가 claim 후 route별 dispatcher로 전달하며 실패 시 backoff와 dead letter로 전환했습니다.",
+    result: "후속 작업 실패가 HTTP 요청과 직접 결합되지 않고, 실패 원인 추적과 재시도가 가능한 구조가 되었습니다.",
+  },
+  {
+    title: "폴더 이동 순환 참조 방지",
+    before: "이동 요청 즉시 반영",
+    after: "Descendant 검증 후 반영",
+    problem:
+      "상위 폴더를 자신의 하위 폴더로 이동시키면 디렉토리 트리에 cycle이 생겨 목록 조회, 경로 계산, 권한 검증 흐름이 무한 루프에 빠질 수 있었습니다.",
+    solution:
+      "FolderUseCases에서 자기 자신, root folder, descendant 이동을 사전에 차단하고, FolderRepository.IsDescendantAsync로 대상 부모가 현재 폴더의 자손인지 검증했습니다.",
+    result: "폴더 트리 무결성을 use case 레벨에서 보장하고, 비정상 요청으로 인한 전체 폴더 조회 장애 가능성을 줄였습니다.",
+  },
+];
+
+const architectureLayers = [
+  {
+    title: "Presentation",
+    tone: "blue",
+    items: ["REST Controllers", "DTO / Validation", "JWT Auth"],
+  },
+  {
+    title: "Application",
+    tone: "green",
+    items: ["Use Cases", "Ports", "Transactions"],
+  },
+  {
+    title: "Domain",
+    tone: "amber",
+    items: ["Domain Models", "Value Objects", "Rules / Policies"],
+  },
+  {
+    title: "Infrastructure",
+    tone: "purple",
+    items: ["JPA / Querydsl", "Redis / MQ", "S3 Adapter"],
+  },
+];
+
+const externalSystems = ["MySQL", "Redis / ElastiCache", "Amazon MQ", "Amazon S3", "Cloudflare CDN"];
+const operationFlow = ["GitHub", "Jenkins", "Docker", "Flyway", "Deploy", "Actuator", "Prometheus", "Grafana / Loki"];
+
 const projects = [
   {
     id: "popn",
@@ -145,8 +447,8 @@ const projects = [
     overview:
       "2023년 12월 배포를 시작해 현재까지 운영 중인 pop'n music 플레이 기록 서비스입니다.",
     intro: [
-      "2년째 운영 중인\n팝픈뮤직 기록 서비스",
-      "2023년 12월 배포를 시작한 popn.gg는\n월간 활성 사용자 약 500명이 사용하는 pop'n music 플레이 기록 서비스입니다.\n\n유저는 자신의 플레이 기록을 갱신하고,\n곡별 성과, 랭킹, 팝클래스 변화를 통해\n플레이 성장을 한눈에 확인할 수 있습니다.",
+      "많은 플레이 기록을\n빠르게 조회하고 분석하도록",
+      "곡, 채보, 유저 기록, 랭킹 데이터를 제공하는 서비스에서 대량 조회 성능과 이미지 제공 구조를 개선했습니다.",
     ],
     problem: {
       title: "대량 플레이데이터 조회와 이미지 리소스 제공 과정에서 응답 비용이 커지는 문제가 있었습니다.",
@@ -158,18 +460,18 @@ const projects = [
       items: [
         {
           label: "Problem",
-          headline: "공식 곡 데이터만으로는 유저의 성장을 설명할 수 없었습니다",
-          text: "공식 데이터는 곡명, 장르, 난이도, 레벨처럼 정적인 정보에 가깝습니다. 하지만 유저가 실제로 알고 싶은 것은 특정 곡에서 내가 어떤 점수를 냈는지, 어떤 메달을 얻었는지, 다른 유저와 비교했을 때 어느 위치에 있는지였습니다.",
+          headline: "기록이 많아질수록 조회 비용이 커졌습니다",
+          text: "화면마다 필요한 데이터 범위가 달라 Entity 전체 조회와 반복 이미지 요청이 부담이 됐습니다.",
         },
         {
           label: "Solution",
-          headline: "화면마다 필요한 기록을 따로 제공",
-          text: "유저 프로필, 곡 상세, 랭킹, 통계 화면이 각각 필요한 정보만 받을 수 있도록 API를 나누고, 반복 통계는 DB 집계와 전용 응답 모델로 정리했습니다.",
+          headline: "필요한 데이터만 조회하도록 분리",
+          text: "DTO Projection, DB 집계, 페이지네이션으로 응답을 가볍게 만들고 CDN으로 이미지 제공 책임을 분리했습니다.",
         },
         {
           label: "Goal",
-          headline: "성장 흐름을 한눈에 보는 경험",
-          text: "기록이 늘어나도 목록, 프로필, 분석 화면이 빠르게 열리고 플레이 성과를 한눈에 이해할 수 있는 서비스 경험을 목표로 했습니다.",
+          headline: "빠른 조회와 선명한 분석 경험",
+          text: "플레이 기록, 랭킹, 스코어 분포를 지연 없이 확인하는 경험을 목표로 했습니다.",
         },
       ],
     },
@@ -297,23 +599,23 @@ const projects = [
     overview:
       "개인 드라이브가 아니라 Space를 중심으로 파일, 멤버, 권한, 용량 정책을 묶어 협업 흐름을 설계한 프로젝트입니다.",
     intro: [
-      "Cloud#은 팀 단위 협업 공간을 중심으로 파일을 관리하는 셀프호스팅 서비스입니다.",
-      "파일 업로드, 권한, 저장소 정책이 커질수록 복잡해지기 쉬운 구조를 Space 단위로 정리하는 데 집중했습니다.",
+      "Space 단위로\n파일 협업을 정리한 서비스",
+      "파일 업로드, 권한, 저장소 정책을 Space 기준으로 묶어 협업 흐름을 단순화했습니다.",
     ],
     problem: {
       title: "파일 서비스는 저장보다 권한과 협업 구조가 더 빨리 복잡해집니다.",
       items: [
         {
           label: "Problem",
-          text: "개인 드라이브와 공유 폴더 중심 구조는 팀 협업, 권한 변경, 용량 정책이 얽히며 관리가 어려워질 수 있습니다.",
+          text: "개인 드라이브·공유 폴더 중심 구조는 팀 협업과 권한 변경이 복잡해지기 쉽습니다.",
         },
         {
           label: "Why",
-          text: "사용자는 파일을 업로드하는 것뿐 아니라 누가, 어디서, 어떤 권한으로 접근하는지도 함께 관리해야 합니다.",
+          text: "파일 자체보다 누가, 어디서, 어떤 권한으로 접근하는지 관리하는 흐름이 중요했습니다.",
         },
         {
           label: "Goal",
-          text: "Space를 최상위 협업 단위로 두고 파일과 멤버, 권한, 저장소 정책을 일관된 흐름으로 연결합니다.",
+          text: "Space를 기준으로 파일, 멤버, 권한, 저장소 정책을 일관되게 연결했습니다.",
         },
       ],
     },
@@ -374,11 +676,17 @@ const projects = [
 ];
 
 const caseStudySections = [
-  { key: "intro", nav: "Intro", label: "서비스 소개 + 운영 성과", icon: Layers },
-  { key: "problem", nav: "Problem", label: "Problem", icon: Target },
+  { key: "intro", nav: "Overview", label: "서비스 소개와 문제 정의", icon: Layers },
   { key: "role", nav: "Role", label: "내가 맡은 백엔드 책임", icon: UserRound },
   { key: "tech", nav: "Tech", label: "사용 기술과 선택 이유", icon: Wrench },
   { key: "fix", nav: "Fix", label: "가장 의미 있었던 개선 사례", icon: Bug },
+];
+
+const activeCaseStudySections = [
+  { key: "intro", nav: "Overview", label: "서비스 소개와 문제 정의", icon: Layers },
+  { key: "tech", nav: "Tech", label: "사용 기술과 구조", icon: Wrench },
+  { key: "reason", nav: "Reason", label: "기술 선택 이유", icon: Boxes },
+  { key: "fix", nav: "Fix", label: "Troubleshooting", icon: Bug },
 ];
 
 function padSlide(number) {
@@ -575,10 +883,228 @@ function ProjectShowcase({ project }) {
 function CaseStepNav({ project, activeKey }) {
   return (
     <div className="case-step-nav" aria-label={`${project.title} case study steps`}>
-      {caseStudySections.map((section) => (
+      {activeCaseStudySections.map((section) => (
         <span className={section.key === activeKey ? "is-active" : ""} key={section.key}>
           {section.nav}
         </span>
+      ))}
+    </div>
+  );
+}
+
+function PopnOverviewCover() {
+  return (
+    <div className="popn-overview-cover">
+      <div className="popn-cover-copy">
+        <span className="popn-cover-badge">
+          <span />
+          Portfolio Project
+        </span>
+        <div>
+          <h3>popn.gg</h3>
+          <p className="popn-cover-subtitle">
+            리듬게임 플레이 기록 <b>·</b> 랭킹 <b>·</b> 통계 서비스
+          </p>
+          <p className="popn-cover-desc">
+            팝픈뮤직 아케이드 플레이 데이터를
+            <br />
+            기록하고, 분석하고, 비교할 수 있는 서비스
+          </p>
+        </div>
+        <div className="popn-cover-features">
+          <span>플레이 기록</span>
+          <span>랭킹</span>
+          <span>통계 분석</span>
+        </div>
+      </div>
+
+      <div className="popn-cover-visual" aria-label="popn.gg service overview screenshots">
+        <figure className="popn-cover-shot profile">
+          <img src={popnCoverProfileImage} alt="popn.gg 유저 프로필 화면" />
+        </figure>
+        <figure className="popn-cover-shot analysis">
+          <img src={popnCoverAnalysisImage} alt="popn.gg 스코어 분포와 메달 통계 화면" />
+        </figure>
+      </div>
+    </div>
+  );
+}
+
+function PopnTechOverview() {
+  return (
+    <div className="popn-tech-layout">
+      <div className="popn-tech-stack-panel">
+        <div className="popn-tech-meta-card">
+          {popnTechMeta.map(({ label, value, icon: Icon }) => (
+            <div className="popn-tech-meta-item" key={label}>
+              <span>
+                <Icon />
+              </span>
+              <div>
+                <small>{label}</small>
+                <strong>{value}</strong>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="skill-stack-grid">
+          {popnTechStacks.map(({ category, icon: Icon, summary, tags }) => (
+            <article className="skill-stack-card" key={category}>
+              <header>
+                <Icon />
+                <div>
+                  <h3>{category}</h3>
+                  <p>{summary}</p>
+                </div>
+              </header>
+              <div className="stack-tags">
+                {tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </article>
+        ))}
+        </div>
+      </div>
+
+      <figure className="architecture-image-panel">
+        <figcaption>BACKEND STRUCTURE</figcaption>
+        <div className="architecture-image-wrap">
+          <img
+            src={`${import.meta.env.BASE_URL}images/popngg/backend-architecture-system.png`}
+            alt="popn.gg backend system architecture"
+          />
+        </div>
+        <div className="architecture-summary-pills">
+          <span>Layered Backend</span>
+          <span>Adapter-based Infrastructure</span>
+          <span>Async & Storage Separation</span>
+        </div>
+      </figure>
+    </div>
+  );
+}
+
+function PopnTechReason() {
+  return (
+    <div className="tech-reason-grid">
+      {popnStackReasons.map((item) => (
+        <article className="tech-reason-card" key={item.title}>
+          <h3>{item.title}</h3>
+          <p>{item.reason}</p>
+          <div>
+            {item.points.map((point) => (
+              <span key={point}>{point}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function PopnTroubleshooting() {
+  return (
+    <div className="popn-trouble-grid">
+      {popnTroubleshootingItems.map((item, index) => (
+        <article className="popn-trouble-card" key={item.title}>
+          <div className="trouble-card-top">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {item.metric && <strong>{item.metric}</strong>}
+          </div>
+          <h3>{item.title}</h3>
+          <div className="trouble-flow">
+            <b>{item.before}</b>
+            <ArrowRight />
+            <b>{item.after}</b>
+          </div>
+          <dl>
+            <div>
+              <dt>Problem</dt>
+              <dd>{item.problem}</dd>
+            </div>
+            <div>
+              <dt>Solution</dt>
+              <dd>{item.solution}</dd>
+            </div>
+            <div>
+              <dt>Result</dt>
+              <dd>{item.result}</dd>
+            </div>
+          </dl>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function CloudTechOverview() {
+  return (
+    <div className="cloud-tech-grid">
+      {cloudTechStacks.map(({ category, icon: Icon, tags }) => (
+        <article className="cloud-tech-card" key={category}>
+          <header>
+            <Icon />
+            <h3>{category}</h3>
+          </header>
+          <div>
+            {tags.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function CloudTechReason() {
+  return (
+    <div className="cloud-reason-grid">
+      {cloudStackReasons.map((item) => (
+        <article className="cloud-reason-card" key={item.title}>
+          <h3>{item.title}</h3>
+          <p>{item.reason}</p>
+          <div>
+            {item.points.map((point) => (
+              <span key={point}>{point}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function CloudTroubleshooting() {
+  return (
+    <div className="cloud-trouble-grid">
+      {cloudTroubleshootingItems.map((item, index) => (
+        <article className="cloud-trouble-card" key={item.title}>
+          <div className="trouble-card-top">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+          </div>
+          <h3>{item.title}</h3>
+          <div className="trouble-flow">
+            <b>{item.before}</b>
+            <ArrowRight />
+            <b>{item.after}</b>
+          </div>
+          <dl>
+            <div>
+              <dt>Problem</dt>
+              <dd>{item.problem}</dd>
+            </div>
+            <div>
+              <dt>Solution</dt>
+              <dd>{item.solution}</dd>
+            </div>
+            <div>
+              <dt>Result</dt>
+              <dd>{item.result}</dd>
+            </div>
+          </dl>
+        </article>
       ))}
     </div>
   );
@@ -623,6 +1149,7 @@ function ProjectsOverviewSlide({ goTo }) {
 function CaseStudySlide({ project, section }) {
   const Icon = section.icon;
   const eyebrowLabel = section.key === "intro" ? project.label : section.label;
+  const usesPopnCover = project.id === "popn" && section.key === "intro";
   const roleItems = project.roleHighlights ?? project.myRole.map((role) => ({ title: "Role", text: role }));
   const fixItems =
     project.fixes ??
@@ -641,39 +1168,55 @@ function CaseStudySlide({ project, section }) {
   return (
     <section className={`slide editorial-slide case-slide ${project.theme}`} aria-label={`${project.title} ${section.label}`}>
       <div className="slide-inner project-slide-inner">
-        <div className="case-frame">
-          <header className="case-header">
-            <div>
-              <span className="case-eyebrow">
-                <Icon />
-                {eyebrowLabel}
-              </span>
-              <h2>{project.title}</h2>
-              <p>{project.subtitle}</p>
-            </div>
-            <CaseStepNav project={project} activeKey={section.key} />
-          </header>
+        <div className={`case-frame${usesPopnCover ? " is-popn-cover" : ""}`}>
+          {!usesPopnCover && (
+            <header className="case-header">
+              <div>
+                <span className="case-eyebrow">
+                  <Icon />
+                  {eyebrowLabel}
+                </span>
+                <h2>{project.title}</h2>
+                <p>
+                  {project.id === "popn"
+                    ? "팝픈뮤직 플레이 기록 · 랭킹 · 성장 추적 서비스"
+                    : project.id === "cloudsharp"
+                      ? "Space 기반 셀프호스팅 파일 협업 서비스"
+                      : project.subtitle}
+                </p>
+              </div>
+              {section.key !== "intro" && <CaseStepNav project={project} activeKey={section.key} />}
+            </header>
+          )}
 
-          {section.key === "intro" && (
+          {usesPopnCover && <PopnOverviewCover />}
+
+          {section.key === "intro" && !usesPopnCover && (
             <div className="case-intro-layout">
-              <div className="case-message">
-                <h3>{project.intro[0]}</h3>
-                <p>{project.intro[1]}</p>
-                <div className="case-meta-grid">
-                  {metaItems.map((item) => (
-                    <div key={item.label}>
-                      <span>{item.label}</span>
-                      <strong>{item.value}</strong>
-                    </div>
-                  ))}
-                </div>
-                <div className="project-keywords">
-                  {project.keywords.map((keyword) => (
-                    <span key={keyword}>{keyword}</span>
-                  ))}
+              <div className="case-intro-main">
+                <div className="case-message">
+                  <h3>{project.intro[0]}</h3>
+                  <p>{project.intro[1]}</p>
+                  <div className="case-meta-grid">
+                    {metaItems.map((item) => (
+                      <div key={item.label}>
+                        <span>{item.label}</span>
+                        <strong>{item.value}</strong>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <ProjectShowcase project={project} />
+              <div className="case-overview-cards">
+                {project.problem.items.map((item) => (
+                  <article className="case-info-card" key={item.label}>
+                    <span>{item.label}</span>
+                    {item.headline && <h4>{item.headline}</h4>}
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           )}
 
@@ -761,7 +1304,11 @@ function CaseStudySlide({ project, section }) {
             </div>
           )}
 
-          {section.key === "tech" && (
+          {section.key === "tech" && project.id === "popn" && <PopnTechOverview />}
+
+          {section.key === "tech" && project.id === "cloudsharp" && <CloudTechOverview />}
+
+          {section.key === "tech" && project.id !== "popn" && project.id !== "cloudsharp" && (
             <div className="case-tech-layout no-message">
               <div className="case-tech-grid">
                 {project.techStack.map((tech) => (
@@ -774,7 +1321,28 @@ function CaseStudySlide({ project, section }) {
             </div>
           )}
 
-          {section.key === "fix" && (
+          {section.key === "reason" && project.id === "popn" && <PopnTechReason />}
+
+          {section.key === "reason" && project.id === "cloudsharp" && <CloudTechReason />}
+
+          {section.key === "reason" && project.id !== "popn" && project.id !== "cloudsharp" && (
+            <div className="case-tech-layout no-message">
+              <div className="case-tech-grid">
+                {project.techStack.map((tech) => (
+                  <article className="case-info-card" key={tech.name}>
+                    <span>{tech.name}</span>
+                    <p>{tech.reason}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {section.key === "fix" && project.id === "popn" && <PopnTroubleshooting />}
+
+          {section.key === "fix" && project.id === "cloudsharp" && <CloudTroubleshooting />}
+
+          {section.key === "fix" && project.id !== "popn" && project.id !== "cloudsharp" && (
             <div className="case-fix-layout">
               {fixItems.map((item, index) => (
                 <article className="case-fix-card" key={`${item.title}-${item.result}`}>
@@ -839,7 +1407,7 @@ const slideDefinitions = [
   { key: "skills", label: "Skills", component: SkillsSlide },
   { key: "projects-overview", label: "Projects Overview", component: ProjectsOverviewSlide },
   ...projects.flatMap((project) =>
-    caseStudySections.map((section) => ({
+    activeCaseStudySections.map((section) => ({
       key: `${project.id}-${section.key}`,
       label: `${project.title} ${section.nav}`,
       component: (props) => <CaseStudySlide {...props} project={project} section={section} />,
